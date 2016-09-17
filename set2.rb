@@ -8,6 +8,27 @@ module Set2
     ## random prefix is for ex14. length is chosen subjectively randomly by me.
     @@random_prefix = Random.new.bytes(27)
 
+    def self.pkcs7_validation string
+        # take the last byte as how many bytes of padding there is
+        pad_length = string[-1].unpack("c").first.to_i
+        padding = Array.new(pad_length,pad_length).pack("c*")
+        string[-pad_length..-1] == padding
+    end
+
+    def self.exo15
+        print "[+] Set2 - Exo 15"
+        units = [["ICE ICE BABY\x04\x04\x04\x04",true]]
+        units << ["ICE ICE BABY\x05\x05\x05\x05",false]
+        units << ["ICE ICE BABY\x01\x02\x03\x04",false]
+        units.each_with_index do |(str,expected),i|
+            ret = Set2.pkcs7_validation str
+            raise "Wrong return for #{str}" unless expected == ret
+        end
+        print " ... OK\n"
+    end
+
+
+
     ## return aes_ecb using the random_key and padding random_pad to the 
     ## data. data is bytes. If prefix is true, it encrypt prefix + data + suffix for ex14
     def self.oracle data, prefix=false

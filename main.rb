@@ -5,7 +5,8 @@
 require_relative 'set2'
 def main
    #Set2::exo12 
-   Set2::exo14
+   #Set2::exo14
+    Set2::exo15
 end
 
 main
